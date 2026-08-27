@@ -1,22 +1,22 @@
-const mongoose = require('mongoose')
-const express = require('express')
+const mongoose = require('mongoose');
+require('dotenv').config();   // ADD THIS — must be near the top
+const express = require('express');
 const cors = require('cors');
 const Users = require('./models/user');
+
+
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({extended : true}));
 app.use(cors());
 
-
-
-
+main().then(() => console.log('Database Connected!'))
+      .catch((err) => console.error('Connection error:', err));  // OPTIONAL but recommended
 
 async function main() {
-
-  await mongoose.connect('mongodb://127.0.0.1:27017/mernDB');
-    
+    await mongoose.connect(process.env.MONGODB_URI);   // CHANGED from local URI
 }
-main();
+
 
 app.post('/users' , async (req , res) =>{
 
